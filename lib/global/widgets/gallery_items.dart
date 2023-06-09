@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 class GalleryItems extends StatefulWidget {
   const GalleryItems({
     Key? key,
+    required this.imagesData,
+    required this.onChangeItemHandler,
   }) : super(key: key);
+
+  final List imagesData;
+  final Function onChangeItemHandler;
 
   @override
   State<GalleryItems> createState() => _GalleryItemsState();
@@ -11,12 +16,6 @@ class GalleryItems extends StatefulWidget {
 
 class _GalleryItemsState extends State<GalleryItems> {
   late PageController _pageController;
-
-  List<String> images = [
-    'lib/global/assets/image_49.png',
-    'lib/global/assets/image_50.png',
-    'lib/global/assets/image_51.png',
-  ];
 
   int activePage = 0;
 
@@ -34,24 +33,25 @@ class _GalleryItemsState extends State<GalleryItems> {
           width: MediaQuery.of(context).size.width,
           height: 200,
           child: PageView.builder(
-              itemCount: images.length,
+              itemCount: widget.imagesData.length,
               pageSnapping: true,
               controller: _pageController,
               onPageChanged: (page) {
                 setState(() {
                   activePage = page;
-                  print(activePage);
+                  widget.onChangeItemHandler(activePage);
                 });
               },
               itemBuilder: (context, pagePosition) {
                 bool active = pagePosition == activePage;
-                return galleryItems(images, pagePosition, active);
+
+                return galleryItems(widget.imagesData, pagePosition, active);
               }),
         ),
         const SizedBox(height: 12),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: indicators(images.length, activePage))
+            children: indicators(widget.imagesData.length, activePage))
       ],
     );
   }
@@ -69,7 +69,7 @@ AnimatedContainer galleryItems(images, pagePosition, active) {
         Radius.circular(10),
       ),
       image: DecorationImage(
-        image: AssetImage(images[pagePosition]),
+        image: NetworkImage(images[pagePosition].imageUrl),
         fit: BoxFit.fill,
       ),
     ),
