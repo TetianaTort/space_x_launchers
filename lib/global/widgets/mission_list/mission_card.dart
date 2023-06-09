@@ -23,14 +23,14 @@ class MissonCard extends StatelessWidget {
                 Text(
                   mission.date,
                   style: const TextStyle(
-                    color: Color.fromRGBO(186, 252, 84, 1),
-                    fontSize: 16,
-                  ),
+                      color: Color.fromRGBO(186, 252, 84, 1),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
                 ),
                 Text(
                   mission.time,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Color.fromRGBO(197, 197, 197, 1),
                     fontSize: 16,
                   ),
                 ),
@@ -44,20 +44,13 @@ class MissonCard extends StatelessWidget {
                   Text(
                     mission.name,
                     maxLines: 1,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
                     mission.description,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ],
               ),

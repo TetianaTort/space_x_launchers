@@ -15,16 +15,16 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _MainScreenState extends ConsumerState<MainScreen> {
   bool _isLoading = true;
-  bool _isLoadingInfo = true;
+  bool _isLoadingMissions = true;
 
   var activePageIndex = 0;
 
-  getInfoData(activePageIndex) async {
+  getMissionsData(activePageIndex) async {
     await ref
         .read(missionsProvider.notifier)
         .fetchInfoBlockData(activePageIndex, ref.read(rocketsProvider));
     setState(() {
-      _isLoadingInfo = false;
+      _isLoadingMissions = false;
     });
   }
 
@@ -36,7 +36,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   void initState() {
     super.initState();
     getGalleryData()
-        .then((value) => getInfoData(activePageIndex))
+        .then((value) => getMissionsData(activePageIndex))
         .then((value) {
       setState(() {
         _isLoading = false;
@@ -48,7 +48,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Widget build(BuildContext context) {
     final galleryItems = _isLoading ? [] : ref.read(rocketsProvider);
     final List<MissionModel> missionsList =
-        _isLoadingInfo ? [] : ref.read(missionsProvider);
+        _isLoadingMissions ? [] : ref.read(missionsProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('SpaceX Launchers'),
@@ -61,22 +61,23 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 galleryItems.isNotEmpty
                     ? GalleryItems(
                         imagesData: galleryItems,
-                        onChangeItemHandler: getInfoData,
+                        onChangeItemHandler: getMissionsData,
                       )
-                    : const Center(
-                        child: Text("Try again later",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 24)),
+                    : Center(
+                        child: Text(
+                          "Try again later",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                       ),
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 24, bottom: 2, left: 16, right: 16),
                   child: Text(
                     missionsList.isNotEmpty ? 'Missions' : 'No missons yet',
-                    style: const TextStyle(fontSize: 24, color: Colors.white),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
-                _isLoadingInfo
+                _isLoadingMissions
                     ? const Center(child: CircularProgressIndicator())
                     : MissionsList(
                         missionsList: missionsList,
