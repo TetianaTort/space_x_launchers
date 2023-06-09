@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:space_x_launchers/global/utils/helpers.dart';
+
 class GalleryItems extends StatefulWidget {
   const GalleryItems({
     Key? key,
@@ -57,20 +59,23 @@ class _GalleryItemsState extends State<GalleryItems> {
   }
 }
 
-AnimatedContainer galleryItems(images, pagePosition, active) {
+galleryItems(imageData, pagePosition, active) {
   double margin = active ? 0 : 10;
 
-  return AnimatedContainer(
-    duration: const Duration(milliseconds: 500),
-    curve: Curves.easeInOutCubic,
-    margin: EdgeInsets.all(margin),
-    decoration: BoxDecoration(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(10),
-      ),
-      image: DecorationImage(
-        image: NetworkImage(images[pagePosition].imageUrl),
-        fit: BoxFit.fill,
+  return GestureDetector(
+    onTap: () => openLink(imageData[pagePosition].wikipediaUrl),
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOutCubic,
+      margin: EdgeInsets.all(margin),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
+        ),
+        image: DecorationImage(
+          image: NetworkImage(imageData[pagePosition].imageUrl),
+          fit: BoxFit.fill,
+        ),
       ),
     ),
   );
