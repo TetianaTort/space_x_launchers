@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:space_x_launchers/global/endpoints/api.dart';
 import 'package:space_x_launchers/global/models/mission_model.dart';
 
-class MissionsNotifier extends StateNotifier<List<dynamic>> {
+class MissionsNotifier extends StateNotifier<List<MissionModel>> {
   MissionsNotifier() : super([]);
 
   Api api = Api();
@@ -17,6 +17,7 @@ class MissionsNotifier extends StateNotifier<List<dynamic>> {
           (mission) => missionData.add(MissionModel.fromJson(mission)),
         );
         state = missionData;
+
         return missionData;
       } catch (e) {
         return [];
@@ -26,6 +27,6 @@ class MissionsNotifier extends StateNotifier<List<dynamic>> {
 }
 
 final missionsProvider =
-    StateNotifierProvider<MissionsNotifier, List<dynamic>>((ref) {
+    StateNotifierProvider<MissionsNotifier, List<MissionModel>>((ref) {
   return MissionsNotifier();
 });

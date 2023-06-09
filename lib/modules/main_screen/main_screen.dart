@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_x_launchers/global/models/mission_model.dart';
 import 'package:space_x_launchers/global/widgets/gallery_items.dart';
+import 'package:space_x_launchers/global/widgets/mission_list/missions_list.dart';
 import 'package:space_x_launchers/providers/missions_provider.dart';
 import 'package:space_x_launchers/providers/rockets_provider.dart';
 
@@ -45,6 +47,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final galleryItems = _isLoading ? [] : ref.read(rocketsProvider);
+    final List<MissionModel> missionsList =
+        _isLoadingInfo ? [] : ref.read(missionsProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('SpaceX Launchers'),
@@ -52,6 +56,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 galleryItems.isNotEmpty
                     ? GalleryItems(
@@ -63,16 +68,19 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                             style:
                                 TextStyle(color: Colors.white, fontSize: 24)),
                       ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 24, bottom: 2, left: 16, right: 16),
+                  child: Text(
+                    missionsList.isNotEmpty ? 'Missions' : 'No missons yet',
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                ),
                 _isLoadingInfo
                     ? const Center(child: CircularProgressIndicator())
-                    : Text(
-                        ref.read(missionsProvider).isNotEmpty
-                            ? ref.read(missionsProvider)[0].name
-                            : '',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 24),
-                      ),
-                // )
+                    : MissionsList(
+                        missionsList: missionsList,
+                      )
               ],
             ),
     );
